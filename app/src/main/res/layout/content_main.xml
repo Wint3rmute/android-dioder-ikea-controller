@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="io.github.wint3rmute.ledscontroller.MainActivity"
+    tools:showIn="@layout/activity_main"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Current Color"
+        android:background="@android:color/black"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+
+    <View
+        android:id="@+id/currentColor"
+        android:layout_gravity="center"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@android:color/darker_gray"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Red"
+        android:textAlignment="center"/>
+
+    <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+        android:id="@+id/seekBarR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:corner_radius="10"
+        app:min_value="0"
+        app:max_value="100"
+        app:bar_highlight_color="@android:color/holo_red_dark"
+        app:left_thumb_color="@android:color/holo_red_dark"
+        app:left_thumb_color_pressed="@android:color/holo_red_dark"
+        app:data_type="_integer"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Green"
+        android:textAlignment="center"/>
+
+    <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+        android:id="@+id/seekBarG"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:corner_radius="10"
+        app:min_value="0"
+        app:max_value="100"
+        app:bar_highlight_color="@android:color/holo_green_dark"
+        app:left_thumb_color="@android:color/holo_green_dark"
+        app:left_thumb_color_pressed="@android:color/holo_green_dark"
+        app:data_type="_integer"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Blue"
+        android:textAlignment="center"/>
+
+    <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+        android:id="@+id/seekBarB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:corner_radius="10"
+        app:min_value="0"
+        app:max_value="100"
+        app:bar_highlight_color="@android:color/holo_blue_dark"
+        app:left_thumb_color="@android:color/holo_blue_dark"
+        app:left_thumb_color_pressed="@android:color/holo_blue_dark"
+        app:data_type="_integer"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Color"
+        android:layout_gravity="center"
+        android:onClick="pickColor"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stroboscope - off"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>
