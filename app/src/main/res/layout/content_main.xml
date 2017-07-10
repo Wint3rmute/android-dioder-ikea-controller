@@ -9,6 +9,10 @@
     tools:showIn="@layout/activity_main"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,7 +107,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fab_margin" />
+        android:layout_height="32dp" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

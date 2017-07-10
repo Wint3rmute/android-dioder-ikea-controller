@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         Snackbar.make(findViewById(android.R.id.content), "Creating rfcommsocket failed!", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
-                    Snackbar.make(findViewById(android.R.id.content), "Connected su C C esfully!", Snackbar.LENGTH_LONG)
+                    Snackbar.make(findViewById(android.R.id.content), "Connected succesfully!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
                 } else
