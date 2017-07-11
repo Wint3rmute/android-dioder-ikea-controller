@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.azeesoft.lib.colorpicker.ColorPickerDialog;
+import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarFinalValueListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 
@@ -167,9 +168,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        seekBarR.setOnSeekbarFinalValueListener(new OnSeekbarFinalValueListener() {
+        seekBarR.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
-            public void finalValue(Number value) {
+            public void valueChanged(Number value) {
                 try {
                     refreshColor(1, value.intValue());
                 } catch (IOException e) {
@@ -178,9 +179,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        seekBarG.setOnSeekbarFinalValueListener(new OnSeekbarFinalValueListener() {
+        seekBarG.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
-            public void finalValue(Number value) {
+            public void valueChanged(Number value) {
                 try {
                     refreshColor(2, value.intValue());
                 } catch (IOException e) {
@@ -189,10 +190,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        seekBarB.setOnSeekbarFinalValueListener(new OnSeekbarFinalValueListener() {
+        seekBarB.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
-            public void finalValue
-                    (Number value) {
+            public void valueChanged(Number value) {
                 try {
                     refreshColor(3, value.intValue());
                 } catch (IOException e) {
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("connecting", "in progress");
                 Snackbar.make(view, "Connecting...", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                        .setAction("Action",  null).show();
 
                 try {
                     AsyncTask btInit = new AsyncTask() {
@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
