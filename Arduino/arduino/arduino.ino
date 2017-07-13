@@ -11,12 +11,6 @@ int command;
 int gammaCorrection(int input)
 {
   //return input;
-  /*double base = (double)input / (double)255;
-  double exponent = 0.45;
-  double result = pow(base, exponent);
-  Serial.println(123);
-  return (int)255*result;
-  */
   float fInput = input;
   Serial.println(fInput/255.0  );
   //Serial.println(pow((float)input/(float)255, 2.2));
