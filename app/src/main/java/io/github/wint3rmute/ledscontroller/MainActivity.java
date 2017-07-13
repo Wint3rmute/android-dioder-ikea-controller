@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private int r, g, b;
 
     public void write(String s) throws IOException {
-        Log.e("sending", "'" + (int) s.charAt(0) + "'");
+        //Log.e("sending", "'" + (int) s.charAt(0) + "'");
         outputStream.write(s.getBytes());
     }
 
@@ -100,12 +100,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void refreshColor(int color) throws IOException {
-        Log.e("refreshing color", "NOW");
+        //Log.e("refreshing color", "NOW");
         r = (int) (((float) ((color >> 16) & 0xFF) / 4));
         g = (int) (((float) ((color >> 8) & 0xFF) / 4));
         b = (int) (((float) ((color >> 0) & 0xFF) / 4));
 
-        Log.e("new color", r + " " + g + " " + b);
+        //Log.e("new color", r + " " + g + " " + b);
 
 
         try {
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         colorPickerDialog.setOnColorPickedListener(new ColorPickerDialog.OnColorPickedListener() {
             @Override
             public void onColorPicked(int color, String hexVal) {
-                Log.e("color picker", color + "");
+                //Log.e("color picker", color + "");
                 try {
                     refreshColor(color);
                 } catch (IOException e) {

@@ -8,6 +8,13 @@ int green = 6;
 int blue = 3;
 int command;
 
+void led(int color, int value)
+{
+
+  analogWrite(color, gammaCorrection(value));
+  
+  }
+
 int gammaCorrection(int input)
 {
   //return input;
@@ -20,12 +27,13 @@ int gammaCorrection(int input)
 void shortBlink(int r, int g, int b, int interval)
 {
   switchOff();
-  analogWrite(red, r);
-  analogWrite(green, g);
-  analogWrite(blue, b);
+  led(red, r);
+  led(green, g);
+  led(blue, b);
   
   delay(interval);
   switchOff();
+  delay(interval);
 }
 
  
@@ -41,13 +49,8 @@ switchOff();
 delay(2000);
 
 shortBlink(255,0,0,500);
-delay(700);
-
 shortBlink(0,255,0,500);
-delay(700);
-
 shortBlink(0,0,255,500);
-delay(700);
 
 analogWrite(red, 255);
 analogWrite(green, 255);
@@ -59,10 +62,10 @@ delay(700);
 for(int i = 255; i >= 0; i--)
 {
   
-  analogWrite(red,i);
-  analogWrite(green,i);
-  analogWrite(blue,i);
-  delay(5);
+  led(red,i);
+  led(green,i);
+  led(blue,i);
+  delay(4);
   
   }
 
@@ -72,19 +75,19 @@ for(int i = 255; i >= 0; i--)
 void controlR(int value)
 {
   //value+=1;
-  analogWrite(red, gammaCorrection(value*4));
+  led(red, value*4);
 }
 
 void controlG(int value)
 {
   value-=64;
-  analogWrite(green, gammaCorrection(value*4));
+  led(green, value*4);
 }
 
 void controlB(int value)
 {
   value-=128;
-  analogWrite(blue, gammaCorrection(value*4));
+  led(blue, value*4);
 }
 
 void specialCommand(int value)
