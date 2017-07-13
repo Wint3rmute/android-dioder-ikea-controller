@@ -18,8 +18,8 @@ SoftwareSerial mySerial(10, 11); // RX, TX
 int red = 5;
 int green = 6;
 int blue = 3;
+int command;
 
-char input[2];
  
 void setup()  
 {
@@ -30,45 +30,69 @@ void setup()
   }
  
 mySerial.begin(57600);
-
-
 Serial.println("test");
- 
 }
 
-int convertTo1024(char value)
+void controlR(int value)
 {
-  //Serial.println((int)((float)value*10.24));
-  //return gammaCorrect((int)((float)value*2.55));
-  return (int)((float)value*2.55);
+  value+=1;
+  analogWrite(red, value*4);
+}
+
+void controlG(int value)
+{
+  value-=63;
+  analogWrite(green, value*4);
+}
+
+void controlB(int value)
+{
+  value-=127;
+  analogWrite(blue, value*4);
+}
+
+void specialCommand(int value)
+{
+
+  switch(value)
+  {
+  case 192:
+  switchOff();
+  break;
+  case 193:
+  switchOn();
+  break;
+  case 194:
+  stroboscopeOn();
+  break;
+  case 195:
+  stroboscopeOff();
+  default:
+  break; 
   }
+}
+void switchOff(){}
+void switchOn(){}
+void stroboscopeOn(){}
+void stroboscopeOff(){}
 
  
 void loop() // run over and over
 {
-
-  if(mySerial.available()>=2)
+  if(mySerial.available())
   {
-    mySerial.readBytes(input, 2);
-     
-    Serial.print((char)input[0]);
-    Serial.print(" ");
-    Serial.println((int)input[1]);
-     
+    command = mySerial.read();
 
-    switch(input[0])
-    {
-      case 'r':
-        analogWrite(red, 1023-convertTo1024(input[1]));
-        break;
-      case 'g':
-        analogWrite(green, 1023-convertTo1024(input[1]));
-        break;
-      case 'b':
-analogWrite(blue, 1023-convertTo1024(input[1]));
+    if(command<=63)
+      controlR(command);
+    else if(command <=127)
+      controlG(command);
+     else if(command<=191)
+      controlB(command);
+     else
+      specialCommand(command);
       
-        break;
-      }
-  }
+    }
+
   
 }
