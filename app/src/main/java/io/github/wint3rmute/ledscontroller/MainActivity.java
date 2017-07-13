@@ -17,7 +17,6 @@ import android.view.View;
 
 import com.azeesoft.lib.colorpicker.ColorPickerDialog;
 import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
-import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarFinalValueListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 
 import java.io.IOException;
@@ -102,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshColor(int color) throws IOException {
         Log.e("refreshing color", "NOW");
-        r = (int) (((float) ((color >> 16) & 0xFF) / 2.55f));
-        g = (int) (((float) ((color >> 8) & 0xFF) / 2.55f));
-        b = (int) (((float) ((color >> 0) & 0xFF) / 2.55f));
+        r = (int) (((float) ((color >> 16) & 0xFF) / 4));
+        g = (int) (((float) ((color >> 8) & 0xFF) / 4));
+        b = (int) (((float) ((color >> 0) & 0xFF) / 4));
 
         Log.e("new color", r + " " + g + " " + b);
 
@@ -136,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateColor() throws IOException {
-        currentColor.setBackgroundColor(Color.rgb((int) ((float) r * 2.55f), (int) ((float) g * 2.55f), (int) ((float) b * 2.55)));
-        write("r" + (char) (r));
-        write("g" + (char) (g));
-        write("b" + (char) (b));
+        currentColor.setBackgroundColor(Color.rgb(r*4,g*4, b*4));
+        write(((char) (r) + ""));
+        write((char) (g+64)+"");
+        write((char) (b+128)+"");
 
     }
 
@@ -229,8 +228,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }.execute();
 
-
-                    Log.e("connecting", "done");
 
                 } catch (Exception e) {
                     Snackbar.make(view, "Failed to connect!", Snackbar.LENGTH_LONG)

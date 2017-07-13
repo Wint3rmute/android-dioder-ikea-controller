@@ -1,15 +1,3 @@
-/*
- 
-# = 35
-= = 61
- 
-x = 120
-y = 121
-z = 122
- 
-b = 98
- 
- */
 #include <SoftwareSerial.h>
 
   
@@ -18,57 +6,142 @@ SoftwareSerial mySerial(10, 11); // RX, TX
 int red = 5;
 int green = 6;
 int blue = 3;
+int command;
 
-char input[2];
+int gammaCorrection(int input)
+{
+  //return input;
+  /*double base = (double)input / (double)255;
+  double exponent = 0.45;
+  double result = pow(base, exponent);
+  Serial.println(123);
+  return (int)255*result;
+  */
+  float fInput = input;
+  Serial.println(fInput/255.0  );
+  //Serial.println(pow((float)input/(float)255, 2.2));
+  return int(255 * pow(fInput/255.0, 2.2));
+}
+
+void shortBlink(int r, int g, int b, int interval)
+{
+  switchOff();
+  analogWrite(red, r);
+  analogWrite(green, g);
+  analogWrite(blue, b);
+  
+  delay(interval);
+  switchOff();
+}
+
  
 void setup()  
 {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
  
 mySerial.begin(57600);
+//Serial.println("test");
+
+switchOff();
+delay(2000);
+
+shortBlink(255,0,0,500);
+delay(700);
+
+shortBlink(0,255,0,500);
+delay(700);
+
+shortBlink(0,0,255,500);
+delay(700);
+
+analogWrite(red, 255);
+analogWrite(green, 255);
+analogWrite(blue, 255);
+delay(700);
 
 
-Serial.println("test");
- 
+
+for(int i = 255; i >= 0; i--)
+{
+  
+  analogWrite(red,i);
+  analogWrite(green,i);
+  analogWrite(blue,i);
+  delay(5);
+  
+  }
+
+
 }
 
-int convertTo1024(char value)
+void controlR(int value)
 {
-  //Serial.println((int)((float)value*10.24));
-  //return gammaCorrect((int)((float)value*2.55));
-  return (int)((float)value*2.55);
+  //value+=1;
+  analogWrite(red, gammaCorrection(value*4));
+}
+
+void controlG(int value)
+{
+  value-=64;
+  analogWrite(green, gammaCorrection(value*4));
+}
+
+void controlB(int value)
+{
+  value-=128;
+  analogWrite(blue, gammaCorrection(value*4));
+}
+
+void specialCommand(int value)
+{
+
+  switch(value)
+  {
+  case 192:
+  switchOff();
+  break;
+  case 193:
+  switchOn();
+  break;
+  case 194:
+  stroboscopeOn();
+  break;
+  case 195:
+  stroboscopeOff();
+  default:
+  break; 
   }
+}
+void switchOff()
+{
+  analogWrite(red,0);
+  analogWrite(green,0);
+  analogWrite(blue,0);
+  
+  }
+void switchOn(){}
+void stroboscopeOn(){}
+void stroboscopeOff(){}
 
  
 void loop() // run over and over
 {
-
-  if(mySerial.available()>=2)
+  if(mySerial.available())
   {
-    mySerial.readBytes(input, 2);
-     
-    Serial.print((char)input[0]);
-    Serial.print(" ");
-    Serial.println((int)input[1]);
-     
+    command = mySerial.read();
+    //Serial.write(command);
 
-    switch(input[0])
-    {
-      case 'r':
-        analogWrite(red, 1023-convertTo1024(input[1]));
-        break;
-      case 'g':
-        analogWrite(green, 1023-convertTo1024(input[1]));
-        break;
-      case 'b':
-analogWrite(blue, 1023-convertTo1024(input[1]));
+    if(command<=63)
+      controlR(command);
+    else if(command <=127)
+      controlG(command);
+     else if(command<=191)
+      controlB(command);
+     else
+      specialCommand(command);
       
-        break;
-      }
-  }
+    }
+
   
 }
