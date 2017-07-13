@@ -1,15 +1,3 @@
-/*
- 
-# = 35
-= = 61
- 
-x = 120
-y = 121
-z = 122
- 
-b = 98
- 
- */
 #include <SoftwareSerial.h>
 
   
@@ -20,35 +8,89 @@ int green = 6;
 int blue = 3;
 int command;
 
+int gammaCorrection(int input)
+{
+  //return input;
+  /*double base = (double)input / (double)255;
+  double exponent = 0.45;
+  double result = pow(base, exponent);
+  Serial.println(123);
+  return (int)255*result;
+  */
+  float fInput = input;
+  Serial.println(fInput/255.0  );
+  //Serial.println(pow((float)input/(float)255, 2.2));
+  return int(255 * pow(fInput/255.0, 2.2));
+}
+
+void shortBlink(int r, int g, int b, int interval)
+{
+  switchOff();
+  analogWrite(red, r);
+  analogWrite(green, g);
+  analogWrite(blue, b);
+  
+  delay(interval);
+  switchOff();
+}
+
  
 void setup()  
 {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
  
 mySerial.begin(57600);
-Serial.println("test");
+//Serial.println("test");
+
+switchOff();
+delay(2000);
+
+shortBlink(255,0,0,500);
+delay(700);
+
+shortBlink(0,255,0,500);
+delay(700);
+
+shortBlink(0,0,255,500);
+delay(700);
+
+analogWrite(red, 255);
+analogWrite(green, 255);
+analogWrite(blue, 255);
+delay(700);
+
+
+
+for(int i = 255; i >= 0; i--)
+{
+  
+  analogWrite(red,i);
+  analogWrite(green,i);
+  analogWrite(blue,i);
+  delay(5);
+  
+  }
+
+
 }
 
 void controlR(int value)
 {
-  value+=1;
-  analogWrite(red, value*4);
+  //value+=1;
+  analogWrite(red, gammaCorrection(value*4));
 }
 
 void controlG(int value)
 {
-  value-=63;
-  analogWrite(green, value*4);
+  value-=64;
+  analogWrite(green, gammaCorrection(value*4));
 }
 
 void controlB(int value)
 {
-  value-=127;
-  analogWrite(blue, value*4);
+  value-=128;
+  analogWrite(blue, gammaCorrection(value*4));
 }
 
 void specialCommand(int value)
@@ -71,7 +113,13 @@ void specialCommand(int value)
   break; 
   }
 }
-void switchOff(){}
+void switchOff()
+{
+  analogWrite(red,0);
+  analogWrite(green,0);
+  analogWrite(blue,0);
+  
+  }
 void switchOn(){}
 void stroboscopeOn(){}
 void stroboscopeOff(){}
@@ -82,6 +130,7 @@ void loop() // run over and over
   if(mySerial.available())
   {
     command = mySerial.read();
+    //Serial.write(command);
 
     if(command<=63)
       controlR(command);
