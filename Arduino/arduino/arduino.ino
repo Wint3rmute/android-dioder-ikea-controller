@@ -8,6 +8,7 @@ int red = 5;
 int green = 6;
 int blue = 3;
 byte command;
+bool isOn = true;
 
 elapsedMillis timeElapsed;
 bool stroboscopeActive = false;
@@ -73,31 +74,41 @@ for(int i = 255; i >= 0; i--)
   
   }
 
+switchOn();
 
 }
 
 void controlR(int value)
 {
   rV = value*4;
-  led(red, rV);
 }
 
 void controlG(int value)
 {
   value-=64;
   gV = value*4;
-  led(green, gV);
 }
 
 void controlB(int value)
 {
   value-=128;
   bV = value*4;
-  led(blue, bV);
 }
 
 
-//void switchOn(){}
+void switchOn(){isOn = true;}
+
+void switchOff()
+{
+  analogWrite(red,0);
+  analogWrite(green,0);
+  analogWrite(blue,0);
+  //delay(5);
+  mySerial.flush();
+  isOn = false;
+  
+  }
+
 void stroboscopeOnSlow()
 {
   stroboscopeSpeed = 400;
@@ -125,6 +136,34 @@ void stroboscopeOff()
   led(red,rV);
   led(green,gV);
   led(blue,bV);
+}
+
+void fadeToBlack()
+{
+  while(rV>0 || gV>0 || bV>0)
+  {
+    
+  delay(10);
+
+    if(rV!=0)
+      rV--;
+
+    if(gV!=0)
+    gV--;
+
+
+    if(bV!=0)
+    bV--;
+
+    
+  led(red, rV);
+  led(green, gV);
+  led(blue, bV);
+
+      
+  }
+
+
 }
 
  
@@ -156,21 +195,19 @@ void specialCommand(int value)
   case 197:
   stroboscopeOnEpilepsy();
   break;
+
+  case 198:
+  switchOn();
+  break;
+
+  case 199:
+  fadeToBlack();
+  break;
   
   default:
   break; 
   }
 }
-void switchOff()
-{
-  analogWrite(red,0);
-  analogWrite(green,0);
-  analogWrite(blue,0);
-  delay(10);
-  mySerial.flush();
-  
-  
-  }
 
 void loop() // run over and over
 {
@@ -210,6 +247,11 @@ void loop() // run over and over
             stroboscopeLedsActive = true;
           }
     }
+}else if(isOn)
+{
+  led(green, gV);
+  led(blue, bV);
+  led(red, rV);
 }
 }
 

@@ -299,11 +299,12 @@ public class MainActivity extends AppCompatActivity {
     public void switchOn(View view)
     {
         sendingOn = true;
-        updateColor();
+        write(198);
     }
     public void stroboscopeOnSlow(View view){write(194);}
     public void stroboscopeOnMedium(View view){write(196);}
     public void stroboscopeOnEpilepsy(View view){write(197);}
     public void stroboscopeOff(View view){write (195);}
+    public void fadeToBlack(View view){write(199);}
 
 }
