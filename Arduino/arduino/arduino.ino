@@ -1,4 +1,5 @@
 #include <SoftwareSerial.h>
+#include <elapsedMillis.h>
 
   
 SoftwareSerial mySerial(10, 11); // RX, TX
@@ -7,17 +8,17 @@ int red = 5;
 int green = 6;
 int blue = 3;
 byte command;
+
+elapsedMillis timeElapsed;
 bool stroboscopeActive = false;
 bool stroboscopeLedsActive = false;
-int lastBlinkTime;
+int stroboscopeSpeed = 300;
 
 int rV, gV, bV;
 
 void led(int color, int value)
 {
-
   analogWrite(color, gammaCorrection(value));
-  
 }
 
 int gammaCorrection(int input)
@@ -47,8 +48,6 @@ void setup()
     Serial.begin(9600);
     mySerial.begin(57600);
     Serial.println("test");
-    lastBlinkTime = millis();
-
 
 switchOff();
 delay(2000);
@@ -98,9 +97,35 @@ void controlB(int value)
 }
 
 
-void switchOn(){}
-void stroboscopeOn(){stroboscopeActive = true;}
-void stroboscopeOff(){stroboscopeActive = false;}
+//void switchOn(){}
+void stroboscopeOnSlow()
+{
+  stroboscopeSpeed = 400;
+  stroboscopeActive = true;
+}
+
+void stroboscopeOnMedium()
+{
+  stroboscopeSpeed = 220;
+  stroboscopeActive = true;
+}
+
+void stroboscopeOnEpilepsy()
+{
+  stroboscopeSpeed = 100;
+  stroboscopeActive = true;
+}
+
+
+
+  
+void stroboscopeOff()
+{
+  stroboscopeActive = false; 
+  led(red,rV);
+  led(green,gV);
+  led(blue,bV);
+}
 
  
 
@@ -114,14 +139,23 @@ void specialCommand(int value)
   case 193:
   switchOff();
   break;
+  
   case 194:
-  stroboscopeOn();
+  stroboscopeOnSlow();
   break;
+  
   case 195:
   stroboscopeOff();
   break;
-  case 200:
-  stroboscopeOff();
+  
+  case 196:
+  stroboscopeOnMedium();
+  break;
+  
+  case 197:
+  stroboscopeOnEpilepsy();
+  break;
+  
   default:
   break; 
   }
@@ -157,32 +191,24 @@ void loop() // run over and over
 
     if(stroboscopeActive)
     {
-       if(millis()-lastBlinkTime>300)
+       if(timeElapsed > stroboscopeSpeed)
        {
-        lastBlinkTime=millis();
-        if(stroboscopeLedsActive)
-        {
-        Serial.println("off");
-          switchOff();
-          stroboscopeLedsActive = false;
+          timeElapsed = 0;
+          if(stroboscopeLedsActive)
+          {
+            //Serial.println("off");
+            switchOff();
+            stroboscopeLedsActive = false;
           }
           else
           {
-            Serial.println("on");
+            //Serial.println("on");
             led(red, rV);
             led(green, gV);
             led(blue, bV);
             stroboscopeLedsActive = true;
-        
-            
-            }
-        
-        }
-        
-
+          }
     }
-
-
-  
+}
 }
 

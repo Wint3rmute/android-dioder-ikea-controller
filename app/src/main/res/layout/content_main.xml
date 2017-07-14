@@ -125,8 +125,8 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stroboscope on"
-            android:onClick="stroboscopeOn"
+            android:text="Stroboscope slow"
+            android:onClick="stroboscopeOnSlow"
             android:layout_weight="50"/>
 
         <Button
@@ -137,6 +137,27 @@
             android:layout_weight="50"/>
 
 </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stroboscope normal"
+            android:onClick="stroboscopeOnMedium"
+            android:layout_weight="50"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stroboscope PTSD"
+            android:onClick="stroboscopeOnEpilepsy"
+            android:layout_weight="50"/>
+
+    </LinearLayout>
 
 
     <LinearLayout
