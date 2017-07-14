@@ -35,9 +35,29 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothDevice arduino;
     private int r, g, b;
 
-    public void write(String s) throws IOException {
+    public void write(String s) {
         //Log.e("sending", "'" + (int) s.charAt(0) + "'");
-        outputStream.write(s.getBytes());
+        try {
+            outputStream.write(s.getBytes());
+            Log.e("sending depr", s.getBytes().toString());
+        }catch (Exception e)
+        {
+
+        }
+    }
+
+    public void write(int s){
+
+        byte a = -127;
+        a+=s;
+
+        try {
+            outputStream.write(s);
+            //Log.e("sending", new String(a).getBytes().toString());
+        }catch (Exception e)
+        {}
+
+
     }
 
 
@@ -134,12 +154,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateColor() throws IOException {
+    private void updateColor() {
         currentColor.setBackgroundColor(Color.rgb(r*4,g*4, b*4));
-        write(((char) (r) + ""));
-        write((char) (g+64)+"");
-        write((char) (b+128)+"");
-
+        try {
+            write(r);
+            write(g + 64);
+            write(b + 128);
+        }catch (Exception e) //hell yes pokemon exception handling
+        {
+            Log.e("sending", "error sending data");
+        }
     }
 
     private void initUI() {
@@ -263,4 +287,13 @@ public class MainActivity extends AppCompatActivity {
     public void pickColor(View view) {
         colorPickerDialog.show();
     }
+
+    public void switchOff(View view)
+    {
+        write(193);
+    }
+    public void switchOn(View view) { updateColor(); }
+    public void stroboscopeOn(View view){write(194);}
+    public void stroboscopeOff(View view){write (195);}
+
 }

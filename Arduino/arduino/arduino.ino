@@ -6,20 +6,24 @@ SoftwareSerial mySerial(10, 11); // RX, TX
 int red = 5;
 int green = 6;
 int blue = 3;
-int command;
+byte command;
+bool stroboscopeActive = false;
+bool stroboscopeLedsActive = false;
+int lastBlinkTime;
+
+int rV, gV, bV;
 
 void led(int color, int value)
 {
 
   analogWrite(color, gammaCorrection(value));
   
-  }
+}
 
 int gammaCorrection(int input)
 {
   //return input;
   float fInput = input;
-  Serial.println(fInput/255.0  );
   //Serial.println(pow((float)input/(float)255, 2.2));
   return int(255 * pow(fInput/255.0, 2.2));
 }
@@ -40,10 +44,11 @@ void shortBlink(int r, int g, int b, int interval)
 void setup()  
 {
   // Open serial communications and wait for port to open:
-  Serial.begin(9600);
- 
-mySerial.begin(57600);
-//Serial.println("test");
+    Serial.begin(9600);
+    mySerial.begin(57600);
+    Serial.println("test");
+    lastBlinkTime = millis();
+
 
 switchOff();
 delay(2000);
@@ -74,37 +79,48 @@ for(int i = 255; i >= 0; i--)
 
 void controlR(int value)
 {
-  //value+=1;
-  led(red, value*4);
+  rV = value*4;
+  led(red, rV);
 }
 
 void controlG(int value)
 {
   value-=64;
-  led(green, value*4);
+  gV = value*4;
+  led(green, gV);
 }
 
 void controlB(int value)
 {
   value-=128;
-  led(blue, value*4);
+  bV = value*4;
+  led(blue, bV);
 }
+
+
+void switchOn(){}
+void stroboscopeOn(){stroboscopeActive = true;}
+void stroboscopeOff(){stroboscopeActive = false;}
+
+ 
 
 void specialCommand(int value)
 {
+  Serial.print("SPECIAL ");
+  Serial.println(value);
 
   switch(value)
   {
-  case 192:
-  switchOff();
-  break;
   case 193:
-  switchOn();
+  switchOff();
   break;
   case 194:
   stroboscopeOn();
   break;
   case 195:
+  stroboscopeOff();
+  break;
+  case 200:
   stroboscopeOff();
   default:
   break; 
@@ -115,19 +131,18 @@ void switchOff()
   analogWrite(red,0);
   analogWrite(green,0);
   analogWrite(blue,0);
+  delay(10);
+  mySerial.flush();
+  
   
   }
-void switchOn(){}
-void stroboscopeOn(){}
-void stroboscopeOff(){}
 
- 
 void loop() // run over and over
 {
   if(mySerial.available())
   {
     command = mySerial.read();
-    //Serial.write(command);
+    Serial.println(command);
 
     if(command<=63)
       controlR(command);
@@ -140,5 +155,34 @@ void loop() // run over and over
       
     }
 
+    if(stroboscopeActive)
+    {
+       if(millis()-lastBlinkTime>300)
+       {
+        lastBlinkTime=millis();
+        if(stroboscopeLedsActive)
+        {
+        Serial.println("off");
+          switchOff();
+          stroboscopeLedsActive = false;
+          }
+          else
+          {
+            Serial.println("on");
+            led(red, rV);
+            led(green, gV);
+            led(blue, bV);
+            stroboscopeLedsActive = true;
+        
+            
+            }
+        
+        }
+        
+
+    }
+
+
   
 }
+

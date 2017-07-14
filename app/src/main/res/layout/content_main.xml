@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="io.github.wint3rmute.ledscontroller.MainActivity"
-    tools:showIn="@layout/activity_main"
+    tools:showIn="@layout/activity_main">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <Space
@@ -114,15 +117,50 @@
         android:text="Pick Color"
         android:layout_gravity="center"
         android:onClick="pickColor"/>
-    <Space
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fab_margin" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stroboscope - off"
-        android:layout_gravity="center"/>
+        android:layout_height="wrap_content">
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stroboscope on"
+            android:onClick="stroboscopeOn"
+            android:layout_weight="50"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stroboscope off"
+            android:onClick="stroboscopeOff"
+            android:layout_weight="50"/>
+
+</LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Switch off"
+            android:onClick="switchOff"
+            android:layout_weight="50"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Switch on"
+            android:onClick="switchOn"
+            android:layout_weight="50"/>
+
+        </LinearLayout>
+
+
 
 
 </LinearLayout>
 
+</ScrollView>
