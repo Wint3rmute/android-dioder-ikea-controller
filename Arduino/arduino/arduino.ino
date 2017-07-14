@@ -137,6 +137,7 @@ void specialCommand(int value)
   switch(value)
   {
   case 193:
+  stroboscopeOff();
   switchOff();
   break;
   
