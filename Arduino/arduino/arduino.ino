@@ -127,7 +127,87 @@ void stroboscopeOnEpilepsy()
   stroboscopeActive = true;
 }
 
+void colorPhase(int interval)
+{
+  while(true)
+  {
+      
+      for(int i = 0; i < 256; i++)
+    {
+       if(mySerial.read() == 201)
+      {fadeToBlack(); {fadeToBlack(); return;}}
+     
+     gV=i;
+     led(green,gV); 
+     delay(interval);
+      }
 
+      
+
+      for(int i = 255; i >= 0; i--) //red?
+    {
+       if(mySerial.read() == 201)
+      {fadeToBlack(); {fadeToBlack(); return;}}
+     
+     rV=i;
+     led(red,rV); 
+     delay(interval);
+      }
+
+    
+   
+      
+    for(int i = 0; i < 256; i++)
+    {
+        if(mySerial.read() == 201)
+      {fadeToBlack(); return;}
+      
+     bV=i;
+     led(blue,bV); 
+     delay(interval);
+      }
+
+      
+
+      
+    for(int i = 255; i >= 0; i--)
+    {
+       if(mySerial.read() == 201)
+      {fadeToBlack(); return;}
+     
+     gV=i;
+     led(green,gV); 
+     delay(interval);
+      }
+
+     
+    
+    for(int i = 0; i < 256; i++)
+    {
+
+       if(mySerial.read() == 201)
+      {fadeToBlack(); return;}
+  
+     rV=i;
+     led(red,rV); 
+     delay(interval);
+      }
+
+  
+
+    for(int i = 255; i >= 0; i--)
+    {
+
+          if(mySerial.read() == 201)
+      {fadeToBlack(); return;}
+  
+     bV=i;
+     led(blue,bV); 
+     delay(interval);
+    }
+   
+  }
+}
 
   
 void stroboscopeOff()
@@ -143,7 +223,7 @@ void fadeToBlack()
   while(rV>0 || gV>0 || bV>0)
   {
     
-  delay(10);
+  delay(7);
 
     if(rV!=0)
       rV--;
@@ -203,6 +283,18 @@ void specialCommand(int value)
   case 199:
   fadeToBlack();
   break;
+
+  case 200: //and 201 for colorPhase -> stop
+  fadeToBlack();
+    for(int i = 0; i < 256; i++)
+    {
+       rV=i;
+       led(red,rV); 
+       delay(10);
+    }
+
+    colorPhase(10);
+  break;
   
   default:
   break; 
@@ -246,12 +338,12 @@ void loop() // run over and over
             led(blue, bV);
             stroboscopeLedsActive = true;
           }
-    }
-}else if(isOn)
-{
-  led(green, gV);
-  led(blue, bV);
-  led(red, rV);
-}
+       }
+    }else if(isOn)
+    {
+      led(green, gV);
+      led(blue, bV);
+      led(red, rV);
+  }
 }
 

@@ -306,5 +306,7 @@ public class MainActivity extends AppCompatActivity {
     public void stroboscopeOnEpilepsy(View view){write(197);}
     public void stroboscopeOff(View view){write (195);}
     public void fadeToBlack(View view){write(199);}
+    public void startColorPhase(View View){write(200);}
+    public void endColorPhase(View view){write(201);}
 
 }
