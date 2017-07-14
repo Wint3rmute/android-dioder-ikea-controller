@@ -27,6 +27,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean sendingOn = true;
     private ColorPickerDialog colorPickerDialog;
     private View currentColor;
     private CrystalSeekbar seekBarR, seekBarG, seekBarB;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void write(int s){
+        if(!sendingOn)
+        {return;}
 
         byte a = -127;
         a+=s;
@@ -291,8 +294,13 @@ public class MainActivity extends AppCompatActivity {
     public void switchOff(View view)
     {
         write(193);
+        sendingOn = false;
     }
-    public void switchOn(View view) {updateColor();}
+    public void switchOn(View view)
+    {
+        sendingOn = true;
+        updateColor();
+    }
     public void stroboscopeOnSlow(View view){write(194);}
     public void stroboscopeOnMedium(View view){write(196);}
     public void stroboscopeOnEpilepsy(View view){write(197);}
