@@ -285,8 +285,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="boom"
-            android:onClick="boomSound"
+            android:text="police"
+            android:onClick="policeSound"
             android:layout_weight="25"/>
     </LinearLayout>
 

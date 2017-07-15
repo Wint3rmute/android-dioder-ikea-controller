@@ -224,6 +224,7 @@ void stroboscopeOff()
   led(red,rV);
   led(green,gV);
   led(blue,bV);
+  switchOn();
 }
 
 void fadeToBlack()
@@ -250,8 +251,6 @@ void fadeToBlack()
 
       
   }
-
-
 }
 
 void smg()
@@ -268,6 +267,77 @@ void smg()
   switchOff();
   delay(65);
   }
+  switchOn();
+}
+
+void police()
+{
+  switchOff();
+  switchOn();
+
+
+  rV = 0;
+  bV = 255;
+  bool blueToRed =  true;
+  int exitCommand = 0;
+  mySerial.flush();
+  while(true)
+  {
+    exitCommand = mySerial.read();
+    switch(exitCommand)
+    {
+      case 199:
+      fadeToBlack();
+      return;
+
+      case 193:
+      switchOff();
+      switchOn();
+      return;
+      
+      
+      default:
+      break;
+      }
+
+    if(blueToRed){
+    led(red, rV++);
+    led(blue, bV--);  
+
+    if(bV==0)
+    blueToRed = false;
+    
+    delay(3);
+    
+    }else
+    {
+    led(red, rV--);
+    led(blue, bV++);  
+
+    if(rV==0)
+    blueToRed = true;
+    
+    delay(3);
+    }
+  }
+}
+
+void stun()
+{
+  led(red, 255);
+  led(green,200);
+  led(blue,100);
+  delay(500);
+
+   for(float i = 0; i < 18.45; i+=0.01)
+   {
+    led(red, sin(i)*255);
+    led(green, sin(i)*255);
+    led(blue, sin(i)*255);
+    delay(2);
+    }
+  
+  switchOn();
 }
 
  
@@ -322,6 +392,14 @@ void specialCommand(int value)
 
   case 204:
     smg();
+  break;
+  
+  case 205:
+    stun();
+  break;
+  
+  case 206:
+    police();
   break;
     
   default:

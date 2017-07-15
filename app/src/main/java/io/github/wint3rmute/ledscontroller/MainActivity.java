@@ -323,11 +323,21 @@ public class MainActivity extends AppCompatActivity {
     public void startColorPhaseSlow(View View){write(202);}
     public void startColorPhasePTSD(View View){write(203);}
     public void boomSound(View view){}
-    public void stunSound(View view){}
     public void smgSound (View view){
         mediaPlayerSMG.start();
         write(204);
-        //mediaPlayerSMGSMG.prepareAsync();
+    }
+    public void stunSound(View view)
+    {
+        mediaPlayerStun.start();
+        write(205);
+
+    }
+
+    public void policeSound(View view)
+    {
+        mediaPlayerPolice.start();
+        write(206);
     }
 
 }
