@@ -4,8 +4,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.azeesoft.lib.colorpicker.ColorPickerDialog;
 import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
@@ -27,6 +30,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MediaPlayer mediaPlayerSMG, mediaPlayerBoom, mediaPlayerStun, mediaPlayerPolice;
     private boolean sendingOn = true;
     private ColorPickerDialog colorPickerDialog;
     private View currentColor;
@@ -228,11 +232,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    void initMediaPlayers()
+    {
+        mediaPlayerSMG = MediaPlayer.create(getApplicationContext(), R.raw.smg_5);
+        mediaPlayerPolice = MediaPlayer.create(getApplicationContext(), R.raw.police);
+        mediaPlayerStun = MediaPlayer.create(getApplicationContext(), R.raw.stun);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initMediaPlayers();
         initUI();
         setListeners();
 
@@ -306,7 +318,16 @@ public class MainActivity extends AppCompatActivity {
     public void stroboscopeOnEpilepsy(View view){write(197);}
     public void stroboscopeOff(View view){write (195);}
     public void fadeToBlack(View view){write(199);}
-    public void startColorPhase(View View){write(200);}
+    public void startColorPhaseMedium(View View){write(200);}
     public void endColorPhase(View view){write(201);}
+    public void startColorPhaseSlow(View View){write(202);}
+    public void startColorPhasePTSD(View View){write(203);}
+    public void boomSound(View view){}
+    public void stunSound(View view){}
+    public void smgSound (View view){
+        mediaPlayerSMG.start();
+        write(204);
+        //mediaPlayerSMGSMG.prepareAsync();
+    }
 
 }

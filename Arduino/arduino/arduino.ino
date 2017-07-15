@@ -129,6 +129,14 @@ void stroboscopeOnEpilepsy()
 
 void colorPhase(int interval)
 {
+  fadeToBlack();
+    for(int i = 0; i < 256; i++)
+    {
+       rV=i;
+       led(red,rV); 
+       delay(interval);
+    }
+
   while(true)
   {
       
@@ -246,6 +254,22 @@ void fadeToBlack()
 
 }
 
+void smg()
+{
+  
+  switchOff();
+  delay(10);
+  for(int i = 0; i < 5; i++)
+  {
+  led(red, 255);
+  led(green, 130);
+  led(blue, 70);
+  delay(65);
+  switchOff();
+  delay(65);
+  }
+}
+
  
 
 void specialCommand(int value)
@@ -285,17 +309,21 @@ void specialCommand(int value)
   break;
 
   case 200: //and 201 for colorPhase -> stop
-  fadeToBlack();
-    for(int i = 0; i < 256; i++)
-    {
-       rV=i;
-       led(red,rV); 
-       delay(10);
-    }
-
-    colorPhase(10);
+    colorPhase(9);
   break;
-  
+
+  case 202: //
+    colorPhase(13);
+  break;
+
+  case 203:
+    colorPhase(1);
+  break;
+
+  case 204:
+    smg();
+  break;
+    
   default:
   break; 
   }

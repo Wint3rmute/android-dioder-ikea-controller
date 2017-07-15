@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="io.github.wint3rmute.ledscontroller.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:scrollbars="none">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,17 +21,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Current Color"
-        android:background="@android:color/black"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+        android:textAlignment="center"
+        android:background="@android:color/black" />
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/fab_margin" />
 
     <View
         android:id="@+id/currentColor"
-        android:layout_gravity="center"
-        android:layout_width="80dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@android:color/darker_gray"/>
 
@@ -47,11 +46,17 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/fab_margin" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Red"
+        android:text="Color"
         android:textAlignment="center"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+
 
     <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
         android:id="@+id/seekBarR"
@@ -68,11 +73,7 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/fab_margin" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Green"
-        android:textAlignment="center"/>
+
 
     <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
         android:id="@+id/seekBarG"
@@ -90,11 +91,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/fab_margin" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Blue"
-        android:textAlignment="center"/>
 
     <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
         android:id="@+id/seekBarB"
@@ -118,67 +114,105 @@
         android:layout_gravity="center"
         android:onClick="pickColor"/>
 
-    <LinearLayout
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stroboscope slow"
-            android:onClick="stroboscopeOnSlow"
-            android:layout_weight="50"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stroboscope off"
-            android:onClick="stroboscopeOff"
-            android:layout_weight="50"/>
-
-</LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Switch"
+        android:textAlignment="center"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stroboscope normal"
-            android:onClick="stroboscopeOnMedium"
-            android:layout_weight="50"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stroboscope PTSD"
-            android:onClick="stroboscopeOnEpilepsy"
-            android:layout_weight="50"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Switch off"
-            android:onClick="switchOff"
-            android:layout_weight="50"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Switch on"
+            android:text="on"
             android:onClick="switchOn"
             android:layout_weight="50"/>
 
-        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="off"
+            android:onClick="switchOff"
+            android:layout_weight="50"/>
 
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stroboscope"
+        android:textAlignment="center"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="slow"
+            android:onClick="stroboscopeOnSlow"
+            android:layout_weight="25"/>
+
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="medium"
+            android:onClick="stroboscopeOnMedium"
+            android:layout_weight="25"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PTSD"
+            android:onClick="stroboscopeOnEpilepsy"
+            android:layout_weight="25"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="off"
+            android:onClick="stroboscopeOff"
+            android:layout_weight="25"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Color Phase"
+        android:textAlignment="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -187,17 +221,43 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Color Phase on"
-            android:onClick="startColorPhase"
-            android:layout_weight="50"/>
+            android:text="slow"
+            android:onClick="startColorPhaseSlow"
+            android:layout_weight="25"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Color Phase Off"
+            android:text="medium"
+            android:onClick="startColorPhaseMedium"
+            android:layout_weight="25"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ptsd"
+            android:onClick="startColorPhasePTSD"
+            android:layout_weight="25"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="off"
             android:onClick="endColorPhase"
-            android:layout_weight="50"/>
+            android:layout_weight="25"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fab_margin" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Effects"
+        android:textAlignment="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -206,17 +266,45 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="fade to black"
+            android:text="fade"
             android:onClick="fadeToBlack"
-            android:layout_weight="50"/>
+            android:layout_weight="25"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gunshoots"
-            android:onClick=""
-            android:layout_weight="50"/>
+            android:text="smg"
+            android:onClick="smgSound"
+            android:layout_weight="25"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="stun"
+            android:onClick="stunSound"
+            android:layout_weight="25"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="boom"
+            android:onClick="boomSound"
+            android:layout_weight="25"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="800dp" />
+    <TextView
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I've lost the game"/>
 
 
 </LinearLayout>
