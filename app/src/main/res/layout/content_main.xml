@@ -304,7 +304,8 @@
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="I've lost the game"/>
+        android:id="@+id/easterEgg"
+        />
 
 
 </LinearLayout>

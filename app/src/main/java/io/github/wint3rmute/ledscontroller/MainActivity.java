@@ -16,15 +16,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.azeesoft.lib.colorpicker.ColorPickerDialog;
 import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Random;
 import java.util.Set;
 
 
@@ -244,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        easterEgg();
         initMediaPlayers();
         initUI();
         setListeners();
@@ -338,6 +343,43 @@ public class MainActivity extends AppCompatActivity {
     {
         mediaPlayerPolice.start();
         write(206);
+    }
+
+
+    void easterEgg()
+    {
+
+        String [] texts = {
+                "Przegrałem...",
+                "Ciasto!",
+                //"Beniz",
+                "Kitagawa did nothing wrong",
+                "//Druciarz tu był",
+                "Somebody once told me",
+                "According to all laws of avation there's no way a bee should be able to fly",
+                "What the Shaft",
+                "Oh my god, they killed Kenny! You bastards!",
+                "Zaraz będzie ciemno...",
+                "Nie było smacznego... 15, typie",
+                "Shaft for president 2k17",
+                "You're tearing me apart Lisa!!!",
+                "Are you a real villain?",
+                "Dwie fioletowe krowy siedzą na sośnie",
+                "Ej, tutaj są nieumarli",
+                "Hodor",
+                "Lol beka iks de",
+                "Siedzicie w karczmie",
+                "Hey kids, wanna buy some transcendence?",
+
+
+        };
+
+        TextView easterEggText = (TextView) findViewById(R.id.easterEgg);
+        Random rnd = new Random();
+        int randomIndex = rnd.nextInt(Integer.MAX_VALUE -1) % texts.length;
+
+        easterEggText.setText(texts[randomIndex]);
+
     }
 
 }
