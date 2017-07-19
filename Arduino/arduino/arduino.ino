@@ -284,21 +284,11 @@ void police()
   while(true)
   {
     exitCommand = mySerial.read();
-    switch(exitCommand)
+    if(exitCommand!=-1)
     {
-      case 199:
-      fadeToBlack();
       return;
-
-      case 193:
-      switchOff();
-      switchOn();
-      return;
-      
-      
-      default:
-      break;
       }
+      
 
     if(blueToRed){
     led(red, rV++);

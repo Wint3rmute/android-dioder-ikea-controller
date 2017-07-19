@@ -3,7 +3,9 @@ package io.github.wint3rmute.ledscontroller;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -332,9 +335,42 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayerSMG.start();
         write(204);
     }
+
+    public void visualizeAudio(View view) {
+
+        Log.e("audio", "starting logging");
+
+        AsyncTask audioVis = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+
+                CountDownLatch latch = new CountDownLatch(1);
+
+
+                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+                for (int i = 0; i < 10000; i++) {
+
+                    try {
+                        latch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("audio", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "");
+
+                }
+                Log.e("audio", "ifnished");
+                return null;
+            }
+        }.execute();
+    }
+
+
     public void stunSound(View view)
     {
         mediaPlayerStun.start();
+
+
         write(205);
 
     }
@@ -361,7 +397,6 @@ public class MainActivity extends AppCompatActivity {
                 "Oh my god, they killed Kenny! You bastards!",
                 "Zaraz będzie ciemno...",
                 "Nie było smacznego... 15, typie",
-                "Shaft for president 2k17",
                 "You're tearing me apart Lisa!!!",
                 "Are you a real villain?",
                 "Dwie fioletowe krowy siedzą na sośnie",
