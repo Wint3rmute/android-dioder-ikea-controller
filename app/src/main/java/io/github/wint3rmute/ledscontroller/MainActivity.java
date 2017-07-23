@@ -1,6 +1,7 @@
 package io.github.wint3rmute.ledscontroller;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -254,36 +255,44 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayerStun = MediaPlayer.create(getApplicationContext(), R.raw.stun);
     }
 
-    private boolean askPermission() {
+    private void askPermissionAndCreateVisualizer() {
 
-        int a = 0;
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.RECORD_AUDIO)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        a );
+                        new String[]{Manifest.permission.RECORD_AUDIO}, 0);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
+        }else
+        {
+            createVisualizer();
         }
 
-return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    createVisualizer();
+
+                } else {
+
+                    this.finish();
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
@@ -291,12 +300,14 @@ return true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        askPermission();
-        createVisualizer();
         easterEgg();
         initMediaPlayers();
         initUI();
         setListeners();
+
+
+        askPermissionAndCreateVisualizer();
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
