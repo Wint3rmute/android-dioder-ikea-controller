@@ -1,6 +1,7 @@
 package io.github.wint3rmute.ledscontroller;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -254,36 +255,44 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayerStun = MediaPlayer.create(getApplicationContext(), R.raw.stun);
     }
 
-    private boolean askPermission() {
+    private void askPermissionAndCreateVisualizer() {
 
-        int a = 0;
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.RECORD_AUDIO)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        a );
+                        new String[]{Manifest.permission.RECORD_AUDIO}, 0);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
+        }else
+        {
+            createVisualizer();
         }
 
-return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    createVisualizer();
+
+                } else {
+
+                    this.finish();
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
@@ -291,11 +300,14 @@ return true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        askPermission();
         easterEgg();
         initMediaPlayers();
         initUI();
         setListeners();
+
+
+        askPermissionAndCreateVisualizer();
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -376,11 +388,16 @@ return true;
         mediaPlayerSMG.start();
         write(204);
     }
-
-    public void visualizeAudio(View view) {
-        createVisualizer();
-
+    public void visOn(View view)
+    {
+     audioOutput.setEnabled(true);
     }
+    public void visOff(View view)
+    {
+        audioOutput.setEnabled(false);
+        fadeToBlack(view);
+    }
+
 
     private void createVisualizer(){
         int rate = Visualizer.getMaxCaptureRate();
@@ -390,23 +407,25 @@ return true;
             @Override
             public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
 
-               try {
-                   refreshColor(1, (int) ((waveform[0] + 128) / 4));
-
-
-               }catch (IOException e)
-               {
-                   Log.e("vis", "error 397");
-               }
             }
 
             @Override
             public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
 
+                try {
+                    Log.e("vis", fft[0] + "");
+                    refreshColor(1, (int) ((Math.abs(fft[0]) / 2)));
+                    refreshColor(2, (int) ((Math.abs(fft[0]) / 2)));
+                    refreshColor(3, (int) ((Math.abs(fft[0]) / 2)));
+
+                }catch (IOException e)
+                {
+                    Log.e("vis", "error 397");
+                }
             }
-        },rate , true, false); // waveform not freq data
+        },20000 , false, true); // waveform not freq data
         Log.e("rate", String.valueOf(Visualizer.getMaxCaptureRate()));
-        audioOutput.setEnabled(true);
+
     }
 
 
