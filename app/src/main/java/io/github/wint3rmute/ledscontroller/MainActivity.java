@@ -1,17 +1,23 @@
 package io.github.wint3rmute.ledscontroller;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.audiofx.Visualizer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,6 +36,7 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private InputStream inStream; //never used but who knows what might happen yeah?
     private BluetoothDevice arduino;
     private int r, g, b;
+    private Visualizer audioOutput;
 
     public void write(String s) {
         //Log.e("sending", "'" + (int) s.charAt(0) + "'");
@@ -246,11 +254,44 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayerStun = MediaPlayer.create(getApplicationContext(), R.raw.stun);
     }
 
+    private boolean askPermission() {
+
+        int a = 0;
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        a );
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+
+return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        askPermission();
         easterEgg();
         initMediaPlayers();
         initUI();
@@ -337,33 +378,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void visualizeAudio(View view) {
+        createVisualizer();
 
-        Log.e("audio", "starting logging");
-
-        AsyncTask audioVis = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-
-                CountDownLatch latch = new CountDownLatch(1);
-
-
-                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-                for (int i = 0; i < 10000; i++) {
-
-                    try {
-                        latch.await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Log.e("audio", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "");
-
-                }
-                Log.e("audio", "ifnished");
-                return null;
-            }
-        }.execute();
     }
+
+    private void createVisualizer(){
+        int rate = Visualizer.getMaxCaptureRate();
+
+        audioOutput = new Visualizer(0); // get output audio stream
+        audioOutput.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
+            @Override
+            public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
+
+               try {
+                   refreshColor(1, (int) ((waveform[0] + 128) / 4));
+
+
+               }catch (IOException e)
+               {
+                   Log.e("vis", "error 397");
+               }
+            }
+
+            @Override
+            public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
+
+            }
+        },rate , true, false); // waveform not freq data
+        Log.e("rate", String.valueOf(Visualizer.getMaxCaptureRate()));
+        audioOutput.setEnabled(true);
+    }
+
+
+
 
 
     public void stunSound(View view)
