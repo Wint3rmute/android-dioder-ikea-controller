@@ -292,6 +292,7 @@ return true;
         setContentView(R.layout.activity_main);
 
         askPermission();
+        createVisualizer();
         easterEgg();
         initMediaPlayers();
         initUI();
@@ -376,11 +377,16 @@ return true;
         mediaPlayerSMG.start();
         write(204);
     }
-
-    public void visualizeAudio(View view) {
-        createVisualizer();
-
+    public void visOn(View view)
+    {
+     audioOutput.setEnabled(true);
     }
+    public void visOff(View view)
+    {
+        audioOutput.setEnabled(false);
+        fadeToBlack(view);
+    }
+
 
     private void createVisualizer(){
         int rate = Visualizer.getMaxCaptureRate();
@@ -390,23 +396,25 @@ return true;
             @Override
             public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
 
-               try {
-                   refreshColor(1, (int) ((waveform[0] + 128) / 4));
-
-
-               }catch (IOException e)
-               {
-                   Log.e("vis", "error 397");
-               }
             }
 
             @Override
             public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
 
+                try {
+                    Log.e("vis", fft[0] + "");
+                    refreshColor(1, (int) ((Math.abs(fft[0]) / 2)));
+                    refreshColor(2, (int) ((Math.abs(fft[0]) / 2)));
+                    refreshColor(3, (int) ((Math.abs(fft[0]) / 2)));
+
+                }catch (IOException e)
+                {
+                    Log.e("vis", "error 397");
+                }
             }
-        },rate , true, false); // waveform not freq data
+        },20000 , false, true); // waveform not freq data
         Log.e("rate", String.valueOf(Visualizer.getMaxCaptureRate()));
-        audioOutput.setEnabled(true);
+
     }
 
 
